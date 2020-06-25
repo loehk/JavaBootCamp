@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+
 //The following program throws a checked exception. 
 public class SQLExceptionActivity {
 
@@ -18,11 +20,25 @@ public class SQLExceptionActivity {
 			//1 - put it in a try block and handle ClassNotFoundException
 			
 			
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection cn = DriverManager.getConnection(url, user, pass);
-			System.out.println("Connection successfully established! \n");
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				
+			} catch (ClassNotFoundException e) {
+				
+				try {
+					Connection cn = DriverManager.getConnection(url, user, pass);
+					System.out.println("Connection successfully established! \n");
+					cn.close();	
+				}catch (SQLException ee) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				
+				}
+				
+			} 
 			
-			cn.close();
+			
+	
 			
 			//2 - You also need to catch SQLException for it to compile
 			
